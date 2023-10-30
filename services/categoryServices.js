@@ -1,7 +1,7 @@
 const CateModel=require('../models/categoryModel')
 var slugify = require('slugify')
 const asyncHandler = require('express-async-handler')
-
+const ApiError=require('../utils/apiError')
 //des   Add Category
 //route  POST /api/v1/categories
 //acc    Admin(private)
@@ -26,12 +26,13 @@ exports.getAllCategories=asyncHandler(async(req,res)=>{
 //des   show spacificCategory
 //route  GET /api/v1/categories/:id
 //acc    All(public)
-exports.getSpacificCategory=asyncHandler(async(req,res)=>{
+exports.getSpacificCategory=asyncHandler(async(req,res,next)=>{
     const {id}=req.params;
     const Cate=await CateModel.findById(id); 
     if(!Cate)
     {
-        res.status(404).json({msg:`Error There is no Category With this ID ${id}`}) 
+     return next(new ApiError(`Error There is no Category With this ID ${id}`,404))
+        //res.status(404).json({msg:`Error There is no Category With this ID ${id}`}) 
 
     }
     res.status(200).json({data:Cate}) 

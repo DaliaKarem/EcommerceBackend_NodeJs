@@ -6,7 +6,7 @@ dotenv.config({path:'config.env' })
 const DB=require('./config/DB')
 const categoryRouter=require('./Routes/categoryRoute')
 const ApiError = require('./utils/apiError')
-
+const Error=require('./middleware/errorHandling')
 //connect DB
 DB()
 //app
@@ -21,10 +21,7 @@ app.all('*',(req,res,next)=>{
     next(new ApiError(`Error ${req.originalUrl} Doesn't Exist`,400))
 })
 //Error Handler with Express Middleware
-app.use((err,req,res,next)=>{
-
-    res.status(err.statusCode).json({Error:err,massege:err.massege,stack:err.stack})
-})
+app.use(Error)
 
 
 app.listen(process.env.PORT,()=>{
