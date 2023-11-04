@@ -5,6 +5,8 @@ const morgan=require('morgan')//middleware logger
 dotenv.config({path:'config.env' })
 const DB=require('./config/DB')
 const categoryRouter=require('./Routes/categoryRoute')
+const SubcategoryRouter=require('./Routes/subCategoryRoute')
+
 const ApiError = require('./utils/apiError')
 const Error=require('./middleware/errorHandling')
 //connect DB
@@ -17,6 +19,8 @@ app.use(morgan('dev'))
 
 //Routes
 app.use("/api/v1/categories",categoryRouter)
+app.use("/api/v1/Subcategories",SubcategoryRouter)
+
 app.all('*',(req,res,next)=>{
     next(new ApiError(`Error ${req.originalUrl} Doesn't Exist`,400))
 })

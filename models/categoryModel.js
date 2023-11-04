@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const { Schema } = mongoose;
 
 const CateSchema = new Schema({
@@ -15,6 +16,7 @@ const CateSchema = new Schema({
   },
   img: String
 }, { timestamps: true });
+
 
 const CateModel = mongoose.model("Category", CateSchema);
 module.exports = CateModel;
