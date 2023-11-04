@@ -18,11 +18,21 @@ exports.addSubCategory = asyncHandler(async (req, res) => {
     });
     res.status(201).json({ data: subCate });
   });
+//route  GET /api/v1/categories/:categoryID/Subcategories
+
+
 //des   show Category
 //route  GET /api/v1/Subcategories
 //acc    All(public)
 exports.getAllSubCategories = asyncHandler(async (req, res) => {
-    const allSubCate = await subCateModel.find({});
+  let FilterCate={};
+  console.log("Helli")
+  console.log(req.params.categoryID)
+  if(req.params.categoryID){
+    //FilterCate.category=req.query.categoryID
+    FilterCate={category:req.params.categoryID}
+  }
+    const allSubCate = await subCateModel.find(FilterCate).populate({path:"category",select:'name -_id'});
     res.status(200).json({ length: allSubCate.length, data: allSubCate });
   });
   //des   show spacificCategory
@@ -30,7 +40,7 @@ exports.getAllSubCategories = asyncHandler(async (req, res) => {
   //acc    All(public)
   exports.getSpacificSubCategory = asyncHandler(async (req, res, next) => {
     const { id } = req.params;
-    const SubCate = await subCateModel.findById(id);
+    const SubCate = await subCateModel.findById(id).populate({path:"category",select:'name -_id'});
     if (!SubCate) {
       return next(new ApiError(`Error There is no SubCategory With this ID ${id}`, 404));
     }
