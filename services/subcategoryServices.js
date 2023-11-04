@@ -6,11 +6,23 @@ const subCateModel=require('../models/subCategoryModel');
 
 const ApiError=require('../utils/apiError')
 
+exports. CateIDBody=(req,res,next)=>{
+  if(!req.params.category)
+  {
+    req.body.category = req.params.categoryID
+  }  
+  next();
+}
+
+//route  Post /api/v1/categories/:categoryID/Subcategories
+//add subcategory on category
+
 //des   Add SubCategory
 //route  POST /api/v1/Subcategories
 //acc    Admin(private)
 exports.addSubCategory = asyncHandler(async (req, res) => {
-    const { name, category } = req.body;
+  
+  const { name, category } = req.body;
     const subCate = await subCateModel.create({
       name: name,
       slug: slugify(name),
@@ -19,20 +31,25 @@ exports.addSubCategory = asyncHandler(async (req, res) => {
     res.status(201).json({ data: subCate });
   });
 //route  GET /api/v1/categories/:categoryID/Subcategories
+exports.FilterCategory=(req,res,next) => {
+  let FilterCate={};
 
+  if(req.params.categoryID){
+    //FilterCate.category=req.query.categoryID
+    FilterCate={category:req.params.categoryID}
+  }
+  req.filerobj=FilterCate
+  next();
+}
 
 //des   show Category
 //route  GET /api/v1/Subcategories
 //acc    All(public)
 exports.getAllSubCategories = asyncHandler(async (req, res) => {
-  let FilterCate={};
-  console.log("Helli")
-  console.log(req.params.categoryID)
-  if(req.params.categoryID){
-    //FilterCate.category=req.query.categoryID
-    FilterCate={category:req.params.categoryID}
-  }
-    const allSubCate = await subCateModel.find(FilterCate).populate({path:"category",select:'name -_id'});
+  //console.log("Helli")
+  //console.log(req.params.categoryID)
+ 
+    const allSubCate = await subCateModel.find(req.filerobj).populate({path:"category",select:'name -_id'});
     res.status(200).json({ length: allSubCate.length, data: allSubCate });
   });
   //des   show spacificCategory
