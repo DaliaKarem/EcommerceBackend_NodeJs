@@ -8,6 +8,7 @@ const ProductModel=require('../models/ProductModel')
 //route  POST /api/v1/Products
 //acc    Admin(private)
 exports.addProduct=asyncHandler(async(req,res)=>{
+  
     req.body.slug=slugify(req.body.name)
   const product=await ProductModel.create(req.body);
   res.status(201).json({data:product})

@@ -31,7 +31,7 @@ const ProductSchema = new Schema({
   price: {
     type: Number,
     required: [true, "Product price is required"],
-    max:[3000000,"too long"],
+    max:[300000,"too long"],
   },
   price_Dis:{
     type: Number,
@@ -46,10 +46,10 @@ const ProductSchema = new Schema({
     refere:'Category',
     required: [true, "product must belong to Category "],
   },
-  subCategory:{
+  subCategory:[{
     type:ObjectId,
     refere:'SubCategory',
-  },
+  }],
   brand:{
     type:ObjectId,
     refere:'Brand',
