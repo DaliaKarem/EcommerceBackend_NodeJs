@@ -8,6 +8,8 @@ const DB=require('./config/DB')
 const categoryRouter=require('./Routes/categoryRoute')
 const SubcategoryRouter=require('./Routes/subCategoryRoute')
 const Brands=require('./Routes/bransRoute')
+const Proudct=require('./Routes/ProuctRoute')
+
 
 const ApiError = require('./utils/apiError')
 const Error=require('./middleware/errorHandling')
@@ -23,6 +25,7 @@ app.use(morgan('dev'))
 app.use("/api/v1/categories",categoryRouter)
 app.use("/api/v1/Subcategories",SubcategoryRouter)
 app.use("/api/v1/brands",Brands)
+app.use("/api/v1/Products",Proudct)
 
 app.all('*',(req,res,next)=>{
     next(new ApiError(`Error ${req.originalUrl} Doesn't Exist`,400))

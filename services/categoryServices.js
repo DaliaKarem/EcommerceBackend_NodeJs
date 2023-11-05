@@ -1,6 +1,7 @@
-const CateModel=require('../models/categoryModel')
-var slugify = require('slugify')
 const asyncHandler = require('express-async-handler')
+const slugify = require('slugify')
+
+const CateModel=require('../models/categoryModel')
 const ApiError=require('../utils/apiError')
 //des   Add Category
 //route  POST /api/v1/categories
