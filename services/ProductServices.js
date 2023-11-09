@@ -18,7 +18,7 @@ exports.addProduct=asyncHandler(async(req,res)=>{
 //route  Get /api/v1/Products
 //acc    all(public)
 exports.getAllProducts=asyncHandler(async(req,res)=>{
-  const AllProduct=await ProductModel.find({}); 
+  const AllProduct=await ProductModel.find(req.query); 
   res.status(200).json({length:AllProduct.length,data:AllProduct}) 
 })
 
