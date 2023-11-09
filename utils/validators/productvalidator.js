@@ -37,10 +37,7 @@ exports.validateAddProduct=[
     }
   }),
 
-  check('subcategory')
-  .optional()
-  .isMongoId()
-  .withMessage('Invalid subcategory')
+  check('subCategory').optional().isMongoId().withMessage('Invalid subcategory')
   .custom(async(value) => {
     //get all subcategories and $in check is any  id in array   exist in this all sub or not
      subcategories.find({_id:{$exists:true ,$in:value}}).then((result) =>{
@@ -49,7 +46,25 @@ exports.validateAddProduct=[
 
     });
   
-  }),
+  })
+  .custom(async(value,{req})=>{
+     subcategories.find({category: req.body.category}).then((result) =>{
+        // Bring subcategories that belong to the result and put them in subcate
+        const subcate=[];
+        result.forEach(i=>{
+          subcate.push(i._id.toString());
+        })
+        console.log(subcate);
+        //i wanna make sure that subcate include subCategory from body        
+        // Check if all subcategories in req.body.subcategories are included in subcate
+        //const Check = value.every(v => subcate.includes(v));
+        //console.log(Check);
+        if(!value.every((v) => subcate.includes(v)))
+        {
+          return  new Error('SubCategories donot belong to this category');
+        }
+    });
+}),
     check('Rating').optional().isNumeric().withMessage("Rating must be a number").isLength({max:5}).withMessage("To long").isLength({min:1}).withMessage("to short"),
     check('numOfRating').optional().isNumeric().withMessage("numOfRating must be a number").isLength({max:5}).withMessage("To long").isLength({min:1}).withMessage("to short"),
     validatorMiddelWare,
